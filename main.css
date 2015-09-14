@@ -1,0 +1,150 @@
+/*
+EmojiSymbols Font (c)blockworks - Kenichi Kaneko
+http://emojisymbols.com/
+*/
+
+@font-face {
+    font-family: "Emoji";
+    src: url("fonts/EmojiSymbols-Regular.woff") format('woff');
+}
+
+
+
+body 				{	margin: 0;
+						padding: 0;
+						font-family: Helvetica, Arial, sans-serif;
+						font-size: 16px;
+						color: #000;}
+
+h1					{	margin: 0;
+						padding: 0;
+						font-size: 27px;}
+
+svg					{	margin: 0 0 0 0px;}
+text				{	font-family: Helvetica, Arial, sans-serif;
+						font-size: 12px;}
+
+#MSK text			{	font-size: 15px;}
+
+#MSK #mouseovertext {
+						font-size: 12px;
+}
+
+#mouseovertext		{
+						font-size: 10px;
+}
+
+
+
+
+.zero				{	font-size: 12px;}
+
+path 				{ 	stroke: black;
+    					stroke-width: 0.5;
+    					fill: none;
+    					opacity: 0.6;}
+
+
+.dot				{	position: relative;
+						width: 4px;
+						height: 4px;
+						border-radius: 4px;
+						background-color: #ff4a4a;
+						left: 4px;
+						top: 28px;
+						display: none;}
+
+
+#MSK path			{	stroke-width: 1.5;}
+
+.header				{	line-height: 1.1em;}
+
+.mainContainer 		{	width: 1000px;
+						min-height: 100px;
+						margin: 0px auto 0;}
+
+.clear				{	clear: both;}
+
+.city			{	font-size: 12px;
+						color: #7f7f7f;}
+
+.comment			{	font-size: 12px;}
+
+.headercontainer		{	height: 70px;
+							position: fixed;
+							background: rgba(255, 255, 255, 0.93);
+							width: 100%;
+							z-index: 100;}
+
+.mainheader				{	height: 30px;
+							margin: 0 auto 0;
+							width: 1000px;
+							padding: 20px 0 20px 0;}
+
+.mainheader img			{	height: 50px;
+						margin: -10px 0 0 10px;}
+.title				{	height: 50px;
+						float: left;
+						line-height: 2.1em;}
+
+.map				{	width: 87px;
+						height: 50px;
+						margin: -8px 0 0 25px;
+						float: left;
+						background: url(img/map.png);
+						background-size: 100%;}
+
+/*--------------------------------------------------------------------------------------*/
+
+.widget 			{ 	padding: 90px 0 0 0;}
+
+.cityInfo			{	width: 220px;
+						height: 200px;
+						float: left;
+						margin: 0 0 5px 40px;
+						}
+
+#MSK				{	float: none;
+						width: 1000px;
+						margin: 0 0 0 0px;
+						height: 300px}
+
+#MSK .graph			{	height: 200px;}
+
+#SPB, #KAZ, #UFA, #VLG	{	margin: 0 0 0 0;}
+
+.param				{	min-height: 20px; 
+						float: left;
+						margin: 0px 0 0 0px;
+						}
+
+#sun				{	margin-right: 15px;
+						margin-left: 5px;}
+
+#rain				{	float: right;}
+#MSK #rain 			{	float: left;
+						margin-left: 15px;}
+
+.wicon				{	font-size: 17px;
+						font-family: "Emoji";
+						opacity: 0.75;
+						z-index: 1;}
+/*--------------------------------------------------------------------------------------*/
+
+.signature 			{ 	height: 20px;
+						margin: -30px 0 40px 0;
+						line-height: 1.5em;
+					}
+
+.copyright			{	font-size: 12px;
+						margin: 0;
+						padding: 0;}
+
+
+
+
+
+
+
+
+
