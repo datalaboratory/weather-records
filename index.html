@@ -1,198 +1,317 @@
 <html>
 <head>
-	<title>Температурные рекорды в городах России</title>	
+    <title>Температурные рекорды в городах России</title>
 
-	<meta property="og:image" content="http://temp.svetosil.ru/weather.jpg"/>
-	<meta property="og:title" content="Температурные рекорды в городах России" />
+    <meta property="og:image" content="http://temp.svetosil.ru/weather.jpg"/>
+    <meta property="og:title" content="Температурные рекорды в городах России"/>
 
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="main.css">
-	<link rel="image_src" href="http://temp.svetosil.ru/weather.jpg" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <link rel="image_src" href="http://temp.svetosil.ru/weather.jpg"/>
 
-	<!-- <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css"> -->
-	<!-- <link rel="stylesheet" href="jquery-ui.css"> -->
-	<!-- <script src="http://code.jquery.com/jquery-1.10.2.js"></script> -->
-	<!-- <script src="http://code.jquery.com/ui/1.11.3/jquery-ui.js"></script> -->
-	<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
-	<script src="jquery.simpleWeather.min.js"></script>
-	<script src="http://d3js.org/d3.v3.min.js"></script>
-	<link rel="shortcut icon" href="/img/favicon.ico">
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/d3/d3.min.js"></script>
+    <link rel="shortcut icon" href="/img/favicon.ico">
 </head>
 <body>
-	<div class="headercontainer">
-		<div class="mainheader">
-				<div class="title"><h1>Температурные рекорды в городах России </h1></div>
-				<div class="map">
-					<div class="dot"></div>
-				</div>
-		</div>
-	</div>
-	<div class="mainContainer">
-		<div class="clear"></div>
-		<div class="widget">
-			<div class="cityInfo" id="MSK">
-				<div class="header"><b>Москва</b><br><span class="city">12,2 млн чел.</span></div>
-				<div class="graph"></div>
-				<div class="parameters">
-					<div class="param" id="clouds"><span class="sun">−</span><span class="comment"> ясных <span class="wicon">&#x2600;</span> и</span></div>
-					<div class="param" id="sun"><span class="clouds">−</span><span class="comment"> пасмурный <span class="wicon">&#x2601;</span> <span class="daysCaption1">день</span></span></div>
-					<div class="param" id="rain"><span class="rain">−</span><span class="comment"> мм осадков <span class="wicon">&#x1F4A7;&#x1F4A7;</span> в год</span></div>
-				</div>
-			</div><br>
-			<div class="cityInfo" id="SPB">
-				<div class="header"><b>Санкт-Петербург</b><br><span class="city">5,2 млн чел.</span></div>
-				<div class="graph" ></div>
-				<div class="parameters">
-					<div class="param" id="clouds"><span class="sun">−</span><span class="comment"> <span class="wicon">&#x2600;</span> и</span></div>
-					<div class="param" id="sun"><span class="clouds">−</span><span class="comment"> <span class="wicon">&#x2601;</span> <span class="daysCaption1">дня</span></span></div>
-					<div class="param" id="rain"><span class="rain">−</span><span class="comment"> мм <span class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
-				</div>
-			</div>
-			<div class="cityInfo" id="NSK">
-				<div class="header"><b>Новосибирск</b><br><span class="city">1,6 млн чел.</span></div>
-				<div class="graph" id="NSK"></div>
-				<div class="parameters">
-					<div class="param" id="clouds"><span class="sun">−</span><span class="comment"> <span class="wicon">&#x2600;</span> и</span></div>
-					<div class="param" id="sun"><span class="clouds">−</span><span class="comment"> <span class="wicon">&#x2601;</span> <span class="daysCaption1">дня</span></span></div>
-					<div class="param" id="rain"><span class="rain">−</span><span class="comment"> мм <span class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
-				</div>
-			</div>
-			<div class="cityInfo" id="EKB">
-				<div class="header"><b>Екатеринбург</b><br><span class="city">1,4 млн чел.</span></div>
-				<div class="graph"></div>
-				<div class="parameters">
-					<div class="param" id="clouds"><span class="sun">−</span><span class="comment"> <span class="wicon">&#x2600;</span> и</span></div>
-					<div class="param" id="sun"><span class="clouds">−</span><span class="comment"> <span class="wicon">&#x2601;</span> <span class="daysCaption1">дня</span></span></div>
-					<div class="param" id="rain"><span class="rain">−</span><span class="comment"> мм <span class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
-				</div>
-			</div>
-			<div class="cityInfo" id="NN">
-				<div class="header"><b>Нижний Новгород</b><br><span class="city">1,3 млн чел.</span></div>
-				<div class="graph"></div>
-				<div class="parameters">
-					<div class="param" id="clouds"><span class="sun">−</span><span class="comment"> <span class="wicon">&#x2600;</span> и</span></div>
-					<div class="param" id="sun"><span class="clouds">−</span><span class="comment"> <span class="wicon">&#x2601;</span> <span class="daysCaption1">дня</span></span></div>
-					<div class="param" id="rain"><span class="rain">−</span><span class="comment"> мм <span class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
-				</div>
-			</div>
-			<div class="cityInfo" id="KAZ">
-				<div class="header"><b>Казань</b><br><span class="city">1,2 млн чел.</span></div>
-				<div class="graph"></div>
-				<div class="parameters">
-					<div class="param" id="clouds"><span class="sun">−</span><span class="comment"> <span class="wicon">&#x2600;</span> и</span></div>
-					<div class="param" id="sun"><span class="clouds">−</span><span class="comment"> <span class="wicon">&#x2601;</span> <span class="daysCaption1">дня</span></span></div>
-					<div class="param" id="rain"><span class="rain">−</span><span class="comment"> мм <span class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
-				</div>
-			</div>
-			<div class="cityInfo" id="CHE">
-				<div class="header"><b>Челябинск</b><br><span class="city">1,2 млн чел.</span></div>
-				<div class="graph"></div>
-				<div class="parameters">
-					<div class="param" id="clouds"><span class="sun">−</span><span class="comment"> <span class="wicon">&#x2600;</span> и</span></div>
-					<div class="param" id="sun"><span class="clouds">−</span><span class="comment"> <span class="wicon">&#x2601;</span> <span class="daysCaption1">дня</span></span></div>
-					<div class="param" id="rain"><span class="rain">−</span><span class="comment"> мм <span class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
-				</div>
-			</div>
-			<div class="cityInfo" id="OMK">
-				<div class="header"><b>Омск</b><br><span class="city">1,2 млн чел.</span></div>
-				<div class="graph"></div>
-				<div class="parameters">
-					<div class="param" id="clouds"><span class="sun">−</span><span class="comment"> <span class="wicon">&#x2600;</span> и</span></div>
-					<div class="param" id="sun"><span class="clouds">−</span><span class="comment"> <span class="wicon">&#x2601;</span> <span class="daysCaption1">дня</span></div>
-					<div class="param" id="rain"><span class="rain">−</span><span class="comment"> мм <span class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
-				</div>
-			</div>
-			<div class="cityInfo" id="SAM">
-				<div class="header"><b>Самара</b><br><span class="city">1,2 млн чел.</span></div>
-				<div class="graph"></div>
-				<div class="parameters">
-					<div class="param" id="clouds"><span class="sun">−</span><span class="comment"> <span class="wicon">&#x2600;</span> и</span></div>
-					<div class="param" id="sun"><span class="clouds">−</span><span class="comment"> <span class="wicon">&#x2601;</span> <span class="daysCaption1">дня</span></span></div>
-					<div class="param" id="rain"><span class="rain">−</span><span class="comment"> мм <span class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
-				</div>
-			</div>
-			<div class="cityInfo" id="UFA">
-				<div class="header"><b>Уфа</b><br><span class="city">1,1 млн чел.</span></div>
-				<div class="graph"></div>
-				<div class="parameters">
-					<div class="param" id="clouds"><span class="sun">−</span><span class="comment"> <span class="wicon">&#x2600;</span> и</span></div>
-					<div class="param" id="sun"><span class="clouds">−</span><span class="comment"> <span class="wicon">&#x2601;</span> <span class="daysCaption1">дня</span></span></div>
-					<div class="param" id="rain"><span class="rain">−</span><span class="comment"> мм <span class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
-				</div>
-			</div>
-			<div class="cityInfo" id="ROS">
-				<div class="header"><b>Ростов-на-Дону</b><br><span class="city">1,1 млн чел.</span></div>
-				<div class="graph"></div>
-				<div class="parameters">
-					<div class="param" id="clouds"><span class="sun">−</span><span class="comment"> <span class="wicon">&#x2600;</span> и</span></div>
-					<div class="param" id="sun"><span class="clouds">−</span><span class="comment"> <span class="wicon">&#x2601;</span> <span class="daysCaption1">дня</span></span></div>
-					
-					<div class="param" id="rain"><span class="rain">−</span><span class="comment"> мм <span class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
-				</div>
-			</div>
-			<div class="cityInfo" id="KSK">
-				<div class="header"><b>Красноярск</b><br><span class="city">1,1 млн чел.</span></div>
-				<div class="graph"></div>
-				<div class="parameters">
-					<div class="param" id="clouds"><span class="sun">−</span><span class="comment"> <span class="wicon">&#x2600;</span> и</span></div>
-					<div class="param" id="sun"><span class="clouds">−</span><span class="comment"> <span class="wicon">&#x2601;</span> <span class="daysCaption1">дня</span></span></div>
-					<div class="param" id="rain"><span class="rain">−</span><span class="comment"> мм <span class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
-				</div>
-			</div>
-			<div class="cityInfo" id="PRM">
-				<div class="header"><b>Пермь</b><br><span class="city">1,0 млн чел.</span></div>
-				<div class="graph"></div>
-				<div class="parameters">
-					<div class="param" id="clouds"><span class="sun">−</span><span class="comment"> <span class="wicon">&#x2600;</span> и</span></div>
-					<div class="param" id="sun"><span class="clouds">−</span><span class="comment"> <span class="wicon">&#x2601;</span> <span class="daysCaption1">дня</span></span></div>
-					<div class="param" id="rain"><span class="rain">−</span><span class="comment"> мм <span class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
-				</div>
-			</div>
-			<div class="cityInfo" id="VLG">
-				<div class="header"><b>Волгоград</b><br><span class="city">1,0 млн чел.</span></div>
-				<div class="graph"></div>
-				<div class="parameters">
-					<div class="param" id="clouds"><span class="sun">−</span><span class="comment"> <span class="wicon">&#x2600;</span> и</span></div>
-					<div class="param" id="sun"><span class="clouds">−</span><span class="comment"> <span class="wicon">&#x2601;</span> <span class="daysCaption1">дня</span></span></div>
-					<div class="param" id="rain"><span class="rain">−</span><span class="comment"> мм <span class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
-				</div>
-			</div>
-			<div class="cityInfo" id="VRN">
-				<div class="header"><b>Воронеж</b><br><span class="city">1,0 млн чел.</span></div>
-				<div class="graph"></div>
-				<div class="parameters">
-					<div class="param" id="clouds"><span class="sun">−</span><span class="comment"> <span class="wicon">&#x2600;</span> и</span></div>
-					<div class="param" id="sun"><span class="clouds">−</span><span class="comment"> <span class="wicon">&#x2601;</span> <span class="daysCaption1">дня</span></span></div>
-					<div class="param" id="rain"><span class="rain">−</span><span class="comment"> мм <span class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
-				</div>
-			</div>
-			<div class="cityInfo" id="SOC">
-				<div class="header"><b>Сочи</b><br><span class="city">390 тыс. чел.</span></div>
-				<div class="graph"></div>
-				<div class="parameters">
-					<div class="param" id="clouds"><span class="sun">−</span><span class="comment"> <span class="wicon">&#x2600;</span> и</span></div>
-					<div class="param" id="sun"><span class="clouds">−</span><span class="comment"> <span class="wicon">&#x2601;</span> <span class="daysCaption1">дня</span></span></div>
-					<div class="param" id="rain"><span class="rain">−</span><span class="comment"> мм <span class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
-				</div>
-			</div>
-			<div class="cityInfo" id="SEV">
-				<div class="header"><b>Севастополь</b><br><span class="city">355 тыс. чел.</span></div>
-				<div class="graph"></div>
-				<div class="parameters">
-					<div class="param" id="clouds"><span class="sun">−</span><span class="comment"> <span class="wicon">&#x2600;</span> и</span></div>
-					<div class="param" id="sun"><span class="clouds">−</span><span class="comment"> <span class="wicon">&#x2601;</span> <span class="daysCaption1">дня</span></span></div>
-					<div class="param" id="rain"><span class="rain">−</span><span class="comment"> мм <span class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
-				</div>
-			</div>
-			<br><br><br><br>
-		</div>
-		<div class="clear"></div>
-		<div class="signature">
-			<p class="copyright">Визуализация <a href="http://datalaboratory.ru/">Лаборатории&nbsp;данных</a>. Статистика <a href="http://rp5.ru/">rp5.ru</a>, 2005...2015 гг. Ясные дни — облачность < 20%, пасмурные — облачность > 80%.<br><br><br></p>
-		</div>
-	</div>
-	<!--<script src="temperatureGraph.js"></script>-->
-	<script src="showWeather.js"></script>
-	<script src="scatterplot2.js"></script>
+<div class="headercontainer">
+    <div class="mainheader">
+        <div class="title"><h1>Температурные рекорды в городах России </h1>
+        </div>
+        <div class="map">
+            <div class="dot"></div>
+        </div>
+    </div>
+</div>
+<div class="mainContainer">
+    <div class="clear"></div>
+    <div class="widget">
+        <div class="cityInfo" id="MSK">
+            <div class="header"><b>Москва</b><br><span class="city">12,2 млн чел.</span>
+            </div>
+            <div class="graph"></div>
+            <div class="parameters">
+                <div class="param param-sun"><span class="sun">−</span><span
+                    class="comment"> ясных <span class="wicon">&#x2600;</span> и</span>
+                </div>
+                <div class="param"><span class="clouds">−</span><span
+                    class="comment"> пасмурный <span
+                    class="wicon">&#x2601;</span> <span class="daysCaption1">день</span></span>
+                </div>
+                <div class="param param-rain"><span class="rain">−</span><span
+                    class="comment"> мм осадков <span class="wicon">&#x1F4A7;&#x1F4A7;</span> в год</span>
+                </div>
+            </div>
+        </div>
+        <br>
+
+        <div class="cityInfo" id="SPB">
+            <div class="header"><b>Санкт-Петербург</b><br><span class="city">5,2 млн чел.</span>
+            </div>
+            <div class="graph"></div>
+            <div class="parameters">
+                <div class="param param-sun"><span class="sun">−</span><span
+                    class="comment"> <span
+                    class="wicon">&#x2600;</span> и</span></div>
+                <div class="param"><span class="clouds">−</span><span
+                    class="comment"> <span class="wicon">&#x2601;</span> <span
+                    class="daysCaption1">дня</span></span></div>
+                <div class="param param-rain"><span class="rain">−</span><span
+                    class="comment"> мм <span
+                    class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
+            </div>
+        </div>
+        <div class="cityInfo" id="NSK">
+            <div class="header"><b>Новосибирск</b><br><span class="city">1,6 млн чел.</span>
+            </div>
+            <div class="graph"></div>
+            <div class="parameters">
+                <div class="param param-sun"><span class="sun">−</span><span
+                    class="comment"> <span
+                    class="wicon">&#x2600;</span> и</span></div>
+                <div class="param"><span class="clouds">−</span><span
+                    class="comment"> <span class="wicon">&#x2601;</span> <span
+                    class="daysCaption1">дня</span></span></div>
+                <div class="param param-rain"><span class="rain">−</span><span
+                    class="comment"> мм <span
+                    class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
+            </div>
+        </div>
+        <div class="cityInfo" id="EKB">
+            <div class="header"><b>Екатеринбург</b><br><span class="city">1,4 млн чел.</span>
+            </div>
+            <div class="graph"></div>
+            <div class="parameters">
+                <div class="param param-sun"><span class="sun">−</span><span
+                    class="comment"> <span
+                    class="wicon">&#x2600;</span> и</span></div>
+                <div class="param"><span class="clouds">−</span><span
+                    class="comment"> <span class="wicon">&#x2601;</span> <span
+                    class="daysCaption1">дня</span></span></div>
+                <div class="param param-rain"><span class="rain">−</span><span
+                    class="comment"> мм <span
+                    class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
+            </div>
+        </div>
+        <div class="cityInfo" id="NN">
+            <div class="header"><b>Нижний Новгород</b><br><span class="city">1,3 млн чел.</span>
+            </div>
+            <div class="graph"></div>
+            <div class="parameters">
+                <div class="param param-sun"><span class="sun">−</span><span
+                    class="comment"> <span
+                    class="wicon">&#x2600;</span> и</span></div>
+                <div class="param"><span class="clouds">−</span><span
+                    class="comment"> <span class="wicon">&#x2601;</span> <span
+                    class="daysCaption1">дня</span></span></div>
+                <div class="param param-rain"><span class="rain">−</span><span
+                    class="comment"> мм <span
+                    class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
+            </div>
+        </div>
+        <div class="cityInfo" id="KAZ">
+            <div class="header"><b>Казань</b><br><span
+                class="city">1,2 млн чел.</span></div>
+            <div class="graph"></div>
+            <div class="parameters">
+                <div class="param param-sun"><span class="sun">−</span><span
+                    class="comment"> <span
+                    class="wicon">&#x2600;</span> и</span></div>
+                <div class="param"><span class="clouds">−</span><span
+                    class="comment"> <span class="wicon">&#x2601;</span> <span
+                    class="daysCaption1">дня</span></span></div>
+                <div class="param param-rain"><span class="rain">−</span><span
+                    class="comment"> мм <span
+                    class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
+            </div>
+        </div>
+        <div class="cityInfo" id="CHE">
+            <div class="header"><b>Челябинск</b><br><span class="city">1,2 млн чел.</span>
+            </div>
+            <div class="graph"></div>
+            <div class="parameters">
+                <div class="param param-sun"><span class="sun">−</span><span
+                    class="comment"> <span
+                    class="wicon">&#x2600;</span> и</span></div>
+                <div class="param"><span class="clouds">−</span><span
+                    class="comment"> <span class="wicon">&#x2601;</span> <span
+                    class="daysCaption1">дня</span></span></div>
+                <div class="param param-rain"><span class="rain">−</span><span
+                    class="comment"> мм <span
+                    class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
+            </div>
+        </div>
+        <div class="cityInfo" id="OMK">
+            <div class="header"><b>Омск</b><br><span
+                class="city">1,2 млн чел.</span></div>
+            <div class="graph"></div>
+            <div class="parameters">
+                <div class="param param-sun"><span class="sun">−</span><span
+                    class="comment"> <span
+                    class="wicon">&#x2600;</span> и</span></div>
+                <div class="param"><span class="clouds">−</span><span
+                    class="comment"> <span class="wicon">&#x2601;</span> <span
+                    class="daysCaption1">дня</span></span></div>
+                <div class="param param-rain"><span class="rain">−</span><span
+                    class="comment"> мм <span
+                    class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
+            </div>
+        </div>
+        <div class="cityInfo" id="SAM">
+            <div class="header"><b>Самара</b><br><span
+                class="city">1,2 млн чел.</span></div>
+            <div class="graph"></div>
+            <div class="parameters">
+                <div class="param param-sun"><span class="sun">−</span><span
+                    class="comment"> <span
+                    class="wicon">&#x2600;</span> и</span></div>
+                <div class="param"><span class="clouds">−</span><span
+                    class="comment"> <span class="wicon">&#x2601;</span> <span
+                    class="daysCaption1">дня</span></span></div>
+                <div class="param param-rain"><span class="rain">−</span><span
+                    class="comment"> мм <span
+                    class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
+            </div>
+        </div>
+        <div class="cityInfo" id="UFA">
+            <div class="header"><b>Уфа</b><br><span
+                class="city">1,1 млн чел.</span></div>
+            <div class="graph"></div>
+            <div class="parameters">
+                <div class="param param-sun"><span class="sun">−</span><span
+                    class="comment"> <span
+                    class="wicon">&#x2600;</span> и</span></div>
+                <div class="param"><span class="clouds">−</span><span
+                    class="comment"> <span class="wicon">&#x2601;</span> <span
+                    class="daysCaption1">дня</span></span></div>
+                <div class="param param-rain"><span class="rain">−</span><span
+                    class="comment"> мм <span
+                    class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
+            </div>
+        </div>
+        <div class="cityInfo" id="ROS">
+            <div class="header"><b>Ростов-на-Дону</b><br><span class="city">1,1 млн чел.</span>
+            </div>
+            <div class="graph"></div>
+            <div class="parameters">
+                <div class="param param-sun"><span class="sun">−</span><span
+                    class="comment"> <span
+                    class="wicon">&#x2600;</span> и</span></div>
+                <div class="param"><span class="clouds">−</span><span
+                    class="comment"> <span class="wicon">&#x2601;</span> <span
+                    class="daysCaption1">дня</span></span></div>
+
+                <div class="param param-rain"><span class="rain">−</span><span
+                    class="comment"> мм <span
+                    class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
+            </div>
+        </div>
+        <div class="cityInfo" id="KSK">
+            <div class="header"><b>Красноярск</b><br><span class="city">1,1 млн чел.</span>
+            </div>
+            <div class="graph"></div>
+            <div class="parameters">
+                <div class="param param-sun"><span class="sun">−</span><span
+                    class="comment"> <span
+                    class="wicon">&#x2600;</span> и</span></div>
+                <div class="param"><span class="clouds">−</span><span
+                    class="comment"> <span class="wicon">&#x2601;</span> <span
+                    class="daysCaption1">дня</span></span></div>
+                <div class="param param-rain"><span class="rain">−</span><span
+                    class="comment"> мм <span
+                    class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
+            </div>
+        </div>
+        <div class="cityInfo" id="PRM">
+            <div class="header"><b>Пермь</b><br><span
+                class="city">1,0 млн чел.</span></div>
+            <div class="graph"></div>
+            <div class="parameters">
+                <div class="param param-sun"><span class="sun">−</span><span
+                    class="comment"> <span
+                    class="wicon">&#x2600;</span> и</span></div>
+                <div class="param"><span class="clouds">−</span><span
+                    class="comment"> <span class="wicon">&#x2601;</span> <span
+                    class="daysCaption1">дня</span></span></div>
+                <div class="param param-rain"><span class="rain">−</span><span
+                    class="comment"> мм <span
+                    class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
+            </div>
+        </div>
+        <div class="cityInfo" id="VLG">
+            <div class="header"><b>Волгоград</b><br><span class="city">1,0 млн чел.</span>
+            </div>
+            <div class="graph"></div>
+            <div class="parameters">
+                <div class="param param-sun"><span class="sun">−</span><span
+                    class="comment"> <span
+                    class="wicon">&#x2600;</span> и</span></div>
+                <div class="param"><span class="clouds">−</span><span
+                    class="comment"> <span class="wicon">&#x2601;</span> <span
+                    class="daysCaption1">дня</span></span></div>
+                <div class="param param-rain"><span class="rain">−</span><span
+                    class="comment"> мм <span
+                    class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
+            </div>
+        </div>
+        <div class="cityInfo" id="VRN">
+            <div class="header"><b>Воронеж</b><br><span class="city">1,0 млн чел.</span>
+            </div>
+            <div class="graph"></div>
+            <div class="parameters">
+                <div class="param param-sun"><span class="sun">−</span><span
+                    class="comment"> <span
+                    class="wicon">&#x2600;</span> и</span></div>
+                <div class="param"><span class="clouds">−</span><span
+                    class="comment"> <span class="wicon">&#x2601;</span> <span
+                    class="daysCaption1">дня</span></span></div>
+                <div class="param param-rain"><span class="rain">−</span><span
+                    class="comment"> мм <span
+                    class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
+            </div>
+        </div>
+        <div class="cityInfo" id="SOC">
+            <div class="header"><b>Сочи</b><br><span
+                class="city">390 тыс. чел.</span></div>
+            <div class="graph"></div>
+            <div class="parameters">
+                <div class="param param-sun"><span class="sun">−</span><span
+                    class="comment"> <span
+                    class="wicon">&#x2600;</span> и</span></div>
+                <div class="param"><span class="clouds">−</span><span
+                    class="comment"> <span class="wicon">&#x2601;</span> <span
+                    class="daysCaption1">дня</span></span></div>
+                <div class="param param-rain"><span class="rain">−</span><span
+                    class="comment"> мм <span
+                    class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
+            </div>
+        </div>
+        <div class="cityInfo" id="SEV">
+            <div class="header"><b>Севастополь</b><br><span class="city">355 тыс. чел.</span>
+            </div>
+            <div class="graph"></div>
+            <div class="parameters">
+                <div class="param param-sun"><span class="sun">−</span><span
+                    class="comment"> <span
+                    class="wicon">&#x2600;</span> и</span></div>
+                <div class="param"><span class="clouds">−</span><span
+                    class="comment"> <span class="wicon">&#x2601;</span> <span
+                    class="daysCaption1">дня</span></span></div>
+                <div class="param param-rain"><span class="rain">−</span><span
+                    class="comment"> мм <span
+                    class="wicon">&#x1F4A7;&#x1F4A7;</span></span></div>
+            </div>
+        </div>
+        <br><br><br><br>
+    </div>
+    <div class="clear"></div>
+    <div class="signature">
+        <p class="copyright">Визуализация <a href="http://datalaboratory.ru/">Лаборатории&nbsp;данных</a>.
+            Статистика <a href="http://rp5.ru/">rp5.ru</a>, 2005...2015 гг.
+            Ясные дни — облачность < 20%, пасмурные — облачность >
+            80%.<br><br><br></p>
+    </div>
+</div>
+<script src="scatterplot2.js"></script>
 </body>
 </html>
