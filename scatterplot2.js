@@ -190,7 +190,6 @@ function drawGraph(data) {
             .append('svg')
             .attr('width', w + 40)
             .attr('height', h);
-/*
 
         //рисуем точки на графике распределения
         citySvg.selectAll('circle')
@@ -214,7 +213,6 @@ function drawGraph(data) {
                 return clr1(d.temp);
             })
             .attr('class', 'graph');
-*/
 
         citySvg
             .append('rect')
