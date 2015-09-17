@@ -182,6 +182,17 @@ path {
     z-index: 1;
 }
 
+.graph {
+    position: relative;
+}
+
+svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
 /*--------------------------------------------------------------------------------------*/
 
 .signature {

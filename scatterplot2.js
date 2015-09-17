@@ -20,6 +20,27 @@ var dotcoords = [
     ['SOC', 1, 31],
     ['SEV', -1, 27]
 ];
+
+
+var clr1 = d3.scale.linear()
+    .domain([-45, -2, 10, 45])
+    .range(['#2588e3', '#79dee7', '#f9e687', '#ff5959']);
+
+var clr2 = d3.scale.linear()
+    .domain([-45, -2, 10, 45])
+    .range(['#1f619e', '#35acc6', '#d6b40a', '#c60202']);
+
+function getRetinaRatio(ctx) {
+    var devicePixelRatio = window.devicePixelRatio || 1;
+    var backingStoreRatio = ctx.webkitBackingStorePixelRatio ||
+        ctx.mozBackingStorePixelRatio ||
+        ctx.msBackingStorePixelRatio ||
+        ctx.oBackingStorePixelRatio ||
+        ctx.backingStorePixelRatio || 1;
+
+    return devicePixelRatio / backingStoreRatio;
+}
+
 var maxcount, mincount;
 
 var yDomain = [60, -45];
@@ -32,6 +53,7 @@ var offset = 0;
 
 var minmaxcur = [];
 var curminmax = {
+    city: '',
     min: [0, 0, 0, '', 0, 0, '', ''],
     max: [0, 0, 0, '', 0, 0, '', ''],
     cur: [0, 0, 0, '', 0, 0, '', '']
@@ -83,23 +105,11 @@ function getX(date) {
 //Те, у которых tempcount больше — менее прозрачные
 //Минимальная прозрачность 20%
 function establishOpacity(data) {
-    var min_opacity = 0.2;
-
-    maxcount = -1;
-    mincount = 1000000;
-
-    data.forEach(function (d) {
-        if (d.tempcount > maxcount) {
-            maxcount = d.tempcount
-        }
-        if (d.tempcount < mincount) {
-            mincount = d.tempcount
-        }
-    });
-
     return d3.scale.linear()
-        .range([min_opacity, 1])
-        .domain([mincount, maxcount]);
+        .range([0.2, 1])
+        .domain(d3.extent(data, function (d) {
+            return d.tempcount;
+        }));
 }
 
 //Вычисляет количество солнечных и количество пасмурных дней
@@ -177,42 +187,37 @@ function drawGraph(data) {
             .range([0, h])
             .domain(yDomain);
 
-        var clr1 = d3.scale.linear()
-            .domain([-45, -2, 10, 45])
-            .range(['#2588e3', '#79dee7', '#f9e687', '#ff5959']);
+        var cityGraph = d3.select('#' + city + ' .graph');
 
-        var clr2 = d3.scale.linear()
-            .domain([-45, -2, 10, 45])
-            .range(['#27557f', '#3a8fa2', '#d6b40a', '#c60202']);
+        var canvas = cityGraph.append('canvas');
+        var ctx = canvas.node().getContext('2d');
+        var ratio = getRetinaRatio(ctx);
+        var scaledWidth = w * ratio;
+        var scaledHeight = h * ratio;
+
+        canvas
+            .attr('width', scaledWidth)
+            .attr('height', scaledHeight)
+            .style('width', w)
+            .style('height', h);
+
+        ctx.scale(ratio, ratio);
+
+        temps.forEach(function (temp) {
+            var d = temp;
+            var color = d3.rgb(clr1(d.temp));
+
+            ctx.fillStyle = 'rgba(' + color.r + ',' + color.g + ',' + color.b + ',' + o(Number(d.tempcount)) + ')';
+            ctx.beginPath();
+            ctx.arc(x(getX(d.curtime.substr(0, 5))), y(d.temp), r, 0, 2 * Math.PI);
+            ctx.fill();
+        });
 
         //Прицепляем к диву с классом .graph svg-контейнер
-        var citySvg = d3.select('#' + city + ' .graph')
+        var citySvg = cityGraph
             .append('svg')
             .attr('width', w + 40)
             .attr('height', h);
-
-        //рисуем точки на графике распределения
-        citySvg.selectAll('circle')
-            .data(temps)
-            .enter()
-            .append('circle')
-            .attr('cx', function (d) {
-                return x(getX(d.curtime.substr(0, 5)))
-            })
-            .attr('cy', function (d) {
-                return y(d.temp)
-            })
-            //если дата сегодняшняя и рисуем минимум или максимум — увеличиваем кружок
-            .attr('r', r)
-            //если дата сегодняшняя и рисуем минимум или максимум — делаем кружок непрозрачным
-            .attr('opacity', function (d) {
-                return o(Number(d.tempcount));
-            })
-            //если дата сегодняшняя и рисуем минимум или максимум — красим кружок ярче
-            .attr('fill', function (d) {
-                return clr1(d.temp);
-            })
-            .attr('class', 'graph');
 
         citySvg
             .append('rect')
@@ -222,7 +227,6 @@ function drawGraph(data) {
             .attr('height', 1)
             .attr('fill', clr2(0))
             .attr('opacity', 0.3);
-
 
         if (city == 'MSK') {
             citySvg
@@ -235,6 +239,59 @@ function drawGraph(data) {
                 .attr('fill', clr2(0));
         }
     });
+
+    $('canvas')
+        .mouseout(function () {
+            var curCity = $(this).parents('.cityInfo').attr('id');
+
+            restorePoints(curCity);
+        })
+        .mousemove(function (e) {
+            var curCity = $(this).parents('.cityInfo').attr('id');
+
+            mouseovercity[0] = mouseovercity[1];
+            mouseovercity[1] = curCity;
+
+            //группируем данные по городам
+            var nested = d3.nest()
+                .key(function (d) {
+                    return d[0];
+                });
+            nested = nested.entries(minmaxcur);
+
+            //берем данные нужного города
+            //исполняем цикл, если мы только что навели на город
+            if (mouseovercity[0] != mouseovercity[1]) {
+                for (var i = 0; i < nested.length; i++) {
+                    if (nested[i].key == curCity) {
+                        cityData = nested[i].values;
+                    }
+                }
+            }
+            //определяем координаты X у графика
+            var leftX = $(this).offset().left;
+            var width = $(this).css('width');
+            var px = width.indexOf('px');
+            width = Number(width.substr(0, px));
+            var rightX = leftX + width;
+
+            var x = e.pageX;
+            if (x > rightX) {
+                x = rightX
+            }
+            var day = Math.round(((x - leftX) / (rightX - leftX)) * 365);
+            if (day == 0) {
+                day = 1
+            }
+
+            var date = getDateX(day);
+            var minmax = getMouseMinMax(date, cityData);
+
+            savePoints(curCity);
+            placeMousePoints(leftX, x, minmax);
+            console.log('curdate', date, minmax, curminmax);
+        });
+
 }
 
 function drawCurrentYear(data) {
@@ -389,10 +446,6 @@ function placeMousePoints(left, x, data) {
         .range([0, h])
         .domain(yDomain);
 
-    var clr2 = d3.scale.linear()
-        .domain([-45, -2, 10, 45])
-        .range(['#1f619e', '#35acc6', '#d6b40a', '#c60202']);
-
     minYt = y(data[2]);
     minY = y(data[2]);
     maxYt = y(data[3]);
@@ -535,6 +588,9 @@ function restorePoints(city) {
 }
 
 function savePoints(city) {
+    if (curminmax.city == city) return;
+    curminmax.city = city;
+
     var dot = d3.select('#' + city + ' .minDot');
 
     curminmax.min[0] = dot.attr('cx');
@@ -622,13 +678,11 @@ function placePoints(city, today, min, max, cur, minyear, maxyear) {
     }
 
     var dist = 14; //минимальное расстояние между подписями
-
     var w = 220;
     var h = 100;
     if (city == 'MSK') {
         w = 1000;
         h = 200;
-        r = 1.1;
         dist = 23;
     }
     var x = d3.scale
@@ -640,10 +694,6 @@ function placePoints(city, today, min, max, cur, minyear, maxyear) {
         .linear()
         .range([0, h])
         .domain(yDomain);
-
-    var clr2 = d3.scale.linear()
-        .domain([-45, -2, 10, 45])
-        .range(['#1f619e', '#35acc6', '#d6b40a', '#c60202']);
 
     var minYt = y(min);
     var minY = y(min);
@@ -799,58 +849,6 @@ d3.csv('alldatamin3.csv', function (data) {
         drawToday(lastdate);
     })
 });
-
-$('.graph')
-    .mouseout(function () {
-        var curCity = $(this).parent().attr('id');
-
-        restorePoints(curCity);
-    })
-    .mouseover(function (e) {
-        var curCity = $(this).parent().attr('id');
-
-        mouseovercity[0] = mouseovercity[1];
-        mouseovercity[1] = curCity;
-
-        //группируем данные по городам
-        var nested = d3.nest()
-            .key(function (d) {
-                return d[0];
-            });
-        nested = nested.entries(minmaxcur);
-
-        //берем данные нужного города
-        //исполняем цикл, если мы только что навели на город
-        if (mouseovercity[0] != mouseovercity[1]) {
-            for (var i = 0; i < nested.length; i++) {
-                if (nested[i].key == curCity) {
-                    cityData = nested[i].values;
-                }
-            }
-        }
-        //определяем координаты X у графика
-        var leftX = $(this).offset().left;
-        var width = $(this).css('width');
-        var px = width.indexOf('px');
-        width = Number(width.substr(0, px));
-        var rightX = leftX + width;
-
-        var x = e.pageX;
-        if (x > rightX) {
-            x = rightX
-        }
-        var day = Math.round(((x - leftX) / (rightX - leftX)) * 365);
-        if (day == 0) {
-            day = 1
-        }
-
-        var date = getDateX(day);
-        var minmax = getMouseMinMax(date, cityData);
-
-        savePoints(curCity);
-        placeMousePoints(leftX, x, minmax);
-        console.log('curdate', date, minmax, curminmax);
-    });
 
 $('.cityInfo')
     .mouseover(function () {
