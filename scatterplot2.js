@@ -1,7 +1,7 @@
 var months = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-var monthnames = ['янв', 'фев', 'марта', 'апр', 'мая', 'июня', 'июля', 'авг', 'сен', 'окт', 'ноя', 'дек'];
-var monthnamesFull = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
-var dotcoords = [
+var monthNames = ['янв', 'фев', 'марта', 'апр', 'мая', 'июня', 'июля', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+var monthNamesFull = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+var dotCoords = [
     ['MSK', 8, 18],
     ['SPB', 9, 13],
     ['NSK', 34, 35],
@@ -21,12 +21,13 @@ var dotcoords = [
     ['SEV', -1, 27]
 ];
 
-
 var clr1 = d3.scale.linear()
+    .interpolate(d3.interpolateHcl)
     .domain([-45, -2, 10, 45])
     .range(['#2588e3', '#79dee7', '#f9e687', '#ff5959']);
 
 var clr2 = d3.scale.linear()
+    .interpolate(d3.interpolateHcl)
     .domain([-45, -2, 10, 45])
     .range(['#1f619e', '#35acc6', '#d6b40a', '#c60202']);
 
@@ -41,18 +42,16 @@ function getRetinaRatio(ctx) {
     return devicePixelRatio / backingStoreRatio;
 }
 
-var maxcount, mincount;
-
 var yDomain = [60, -45];
 
-var mouseovercity = ['', ''];
+var mouseOvercity = ['', ''];
 
 var daysCaption = ['дней', 'день', 'дня', 'дня', 'дня', 'дней', 'дней', 'дней', 'дней', 'дней'];
 
 var offset = 0;
 
-var minmaxcur = [];
-var curminmax = {
+var minMaxCur = [];
+var curMinMax = {
     city: '',
     min: [0, 0, 0, '', 0, 0, '', ''],
     max: [0, 0, 0, '', 0, 0, '', ''],
@@ -249,19 +248,19 @@ function drawGraph(data) {
         .mousemove(function (e) {
             var curCity = $(this).parents('.cityInfo').attr('id');
 
-            mouseovercity[0] = mouseovercity[1];
-            mouseovercity[1] = curCity;
+            mouseOvercity[0] = mouseOvercity[1];
+            mouseOvercity[1] = curCity;
 
             //группируем данные по городам
             var nested = d3.nest()
                 .key(function (d) {
                     return d[0];
                 });
-            nested = nested.entries(minmaxcur);
+            nested = nested.entries(minMaxCur);
 
             //берем данные нужного города
             //исполняем цикл, если мы только что навели на город
-            if (mouseovercity[0] != mouseovercity[1]) {
+            if (mouseOvercity[0] != mouseOvercity[1]) {
                 for (var i = 0; i < nested.length; i++) {
                     if (nested[i].key == curCity) {
                         cityData = nested[i].values;
@@ -289,7 +288,7 @@ function drawGraph(data) {
 
             savePoints(curCity);
             placeMousePoints(leftX, x, minmax);
-            console.log('curdate', date, minmax, curminmax);
+            console.log('curdate', date, minmax, curMinMax);
         });
 
 }
@@ -367,29 +366,29 @@ function getMinMax(data) {
 
         for (var day = 0; day < daysData.length; day++) {
             var values = daysData[day].values[0];
-            var curtime = values.curtime.substr(0, 5);
+            var curTime = values.curtime.substr(0, 5);
             var min = Number(values.min);
             var max = Number(values.max);
-            var minyear = Number(values.yearmin);
+            var minYear = Number(values.yearmin);
             var maxyear = Number(values.yearmax);
 
-            minmaxcur.push([
-                curCity, curtime, min, max, 0, minyear, maxyear
+            minMaxCur.push([
+                curCity, curTime, min, max, 0, minYear, maxyear
             ])
         }
     }
 }
 
-function getCur(data, minmaxcur) {
+function getCur(data, minMaxCur) {
     data.forEach(function (d) {
-        for (var i = 0; i < minmaxcur.length; i++) {
-            if (d.city == minmaxcur[i][0] && d.curtime.substr(0, 5) == minmaxcur[i][1]) {
-                minmaxcur[i][4] = Number(d.temp);
+        for (var i = 0; i < minMaxCur.length; i++) {
+            if (d.city == minMaxCur[i][0] && d.curtime.substr(0, 5) == minMaxCur[i][1]) {
+                minMaxCur[i][4] = Number(d.temp);
             }
         }
     });
 
-    return minmaxcur;
+    return minMaxCur;
 }
 
 function placeMousePoints(left, x, data) {
@@ -402,9 +401,9 @@ function placeMousePoints(left, x, data) {
 
     var array;
     if (city == 'MSK') {
-        array = monthnamesFull;
+        array = monthNamesFull;
     } else {
-        array = monthnames;
+        array = monthNames;
     }
     var curT = Number(data[1].substr(0, 2)) + ' ' + array[Number(data[1].substr(3, 2)) - 1];
 
@@ -554,84 +553,84 @@ function placeMousePoints(left, x, data) {
 
 function restorePoints(city) {
     d3.select('#' + city + ' .minDot')
-        .attr('cx', curminmax.min[0])
-        .attr('cy', curminmax.min[1])
-        .attr('fill', curminmax.min[3]);
+        .attr('cx', curMinMax.min[0])
+        .attr('cy', curMinMax.min[1])
+        .attr('fill', curMinMax.min[3]);
 
     d3.select('#' + city + ' .maxDot')
-        .attr('cx', curminmax.max[0])
-        .attr('cy', curminmax.max[1])
-        .attr('fill', curminmax.max[3]);
+        .attr('cx', curMinMax.max[0])
+        .attr('cy', curMinMax.max[1])
+        .attr('fill', curMinMax.max[3]);
 
     d3.select('#' + city + ' .minT text')
-        .attr('x', curminmax.min[4])
-        .attr('y', curminmax.min[5])
-        .attr('fill', curminmax.min[6])
+        .attr('x', curMinMax.min[4])
+        .attr('y', curMinMax.min[5])
+        .attr('fill', curMinMax.min[6])
         .style('text-anchor', 'start')
-        .text(curminmax.min[7]);
+        .text(curMinMax.min[7]);
 
 
     d3.select('#' + city + ' .maxT text')
-        .attr('x', curminmax.max[4])
-        .attr('y', curminmax.max[5])
-        .attr('fill', curminmax.max[6])
+        .attr('x', curMinMax.max[4])
+        .attr('y', curMinMax.max[5])
+        .attr('fill', curMinMax.max[6])
         .style('text-anchor', 'start')
-        .text(curminmax.max[7]);
+        .text(curMinMax.max[7]);
 
     d3.select('#' + city + ' .curT text')
-        .attr('x', curminmax.cur[4])
-        .attr('y', curminmax.cur[5])
-        .attr('fill', curminmax.cur[6])
+        .attr('x', curMinMax.cur[4])
+        .attr('y', curMinMax.cur[5])
+        .attr('fill', curMinMax.cur[6])
         .attr('id', 'notmouseovertext')
         .style('text-anchor', 'start')
-        .text(curminmax.cur[7])
+        .text(curMinMax.cur[7])
 }
 
 function savePoints(city) {
-    if (curminmax.city == city) return;
-    curminmax.city = city;
+    if (curMinMax.city == city) return;
+    curMinMax.city = city;
 
     var dot = d3.select('#' + city + ' .minDot');
 
-    curminmax.min[0] = dot.attr('cx');
-    curminmax.min[1] = dot.attr('cy');
-    curminmax.min[2] = dot.attr('r');
-    curminmax.min[3] = dot.attr('fill');
+    curMinMax.min[0] = dot.attr('cx');
+    curMinMax.min[1] = dot.attr('cy');
+    curMinMax.min[2] = dot.attr('r');
+    curMinMax.min[3] = dot.attr('fill');
 
     dot = d3.select('#' + city + ' .minT text');
 
-    curminmax.min[4] = dot.attr('x');
-    curminmax.min[5] = dot.attr('y');
-    curminmax.min[6] = dot.attr('fill');
-    curminmax.min[7] = dot.text();
+    curMinMax.min[4] = dot.attr('x');
+    curMinMax.min[5] = dot.attr('y');
+    curMinMax.min[6] = dot.attr('fill');
+    curMinMax.min[7] = dot.text();
 
     dot = d3.select('#' + city + ' .maxDot');
 
-    curminmax.max[0] = dot.attr('cx');
-    curminmax.max[1] = dot.attr('cy');
-    curminmax.max[2] = dot.attr('r');
-    curminmax.max[3] = dot.attr('fill');
+    curMinMax.max[0] = dot.attr('cx');
+    curMinMax.max[1] = dot.attr('cy');
+    curMinMax.max[2] = dot.attr('r');
+    curMinMax.max[3] = dot.attr('fill');
 
     dot = d3.select('#' + city + ' .maxT text');
 
-    curminmax.max[4] = dot.attr('x');
-    curminmax.max[5] = dot.attr('y');
-    curminmax.max[6] = dot.attr('fill');
-    curminmax.max[7] = dot.text();
+    curMinMax.max[4] = dot.attr('x');
+    curMinMax.max[5] = dot.attr('y');
+    curMinMax.max[6] = dot.attr('fill');
+    curMinMax.max[7] = dot.text();
 
     dot = d3.select('#' + city + ' .curDot');
 
-    curminmax.cur[0] = dot.attr('cx');
-    curminmax.cur[1] = dot.attr('cy');
-    curminmax.cur[2] = dot.attr('r');
-    curminmax.cur[3] = dot.attr('fill');
+    curMinMax.cur[0] = dot.attr('cx');
+    curMinMax.cur[1] = dot.attr('cy');
+    curMinMax.cur[2] = dot.attr('r');
+    curMinMax.cur[3] = dot.attr('fill');
 
     dot = d3.select('#' + city + ' .curT text');
 
-    curminmax.cur[4] = dot.attr('x');
-    curminmax.cur[5] = dot.attr('y');
-    curminmax.cur[6] = dot.attr('fill');
-    curminmax.cur[7] = dot.text();
+    curMinMax.cur[4] = dot.attr('x');
+    curMinMax.cur[5] = dot.attr('y');
+    curMinMax.cur[6] = dot.attr('fill');
+    curMinMax.cur[7] = dot.text();
 
 }
 
@@ -713,45 +712,41 @@ function placePoints(city, today, min, max, cur, minyear, maxyear) {
 
     var citySvg = d3.select('#' + city + ' .graph svg');
 
-    if (cur > min) {
-        citySvg
-            .append('circle')
-            .attr('class', 'minDot')
-            .attr('cx', x(getX(today)))
-            .attr('cy', minY)
-            .attr('r', 2)
-            .attr('fill', clr2(min));
+    citySvg
+        .append('circle')
+        .attr('class', 'minDot')
+        .attr('cx', x(getX(today)))
+        .attr('cy', minY)
+        .attr('r', 2)
+        .attr('fill', clr2(min));
 
-        citySvg
-            .append('g')
-            .attr('class', 'minT')
-            .append('text')
-            .attr('x', x(getX(today)) + 4)
-            .attr('y', minYt)
-            .attr('dy', '.35em')
-            .text(minT)
-            .attr('fill', clr2(min))
-    }
+    citySvg
+        .append('g')
+        .attr('class', 'minT')
+        .append('text')
+        .attr('x', x(getX(today)) + 4)
+        .attr('y', minYt)
+        .attr('dy', '.35em')
+        .text(minT)
+        .attr('fill', clr2(min));
 
-    if (cur < max) {
-        citySvg
-            .append('circle')
-            .attr('class', 'maxDot')
-            .attr('cx', x(getX(today)))
-            .attr('cy', maxY)
-            .attr('r', 2)
-            .attr('fill', clr2(max));
+    citySvg
+        .append('circle')
+        .attr('class', 'maxDot')
+        .attr('cx', x(getX(today)))
+        .attr('cy', maxY)
+        .attr('r', 2)
+        .attr('fill', clr2(max));
 
-        citySvg
-            .append('g')
-            .attr('class', 'maxT')
-            .append('text')
-            .attr('x', x(getX(today)) + 4)
-            .attr('y', maxYt)
-            .attr('dy', '.35em')
-            .text(maxT)
-            .attr('fill', clr2(max))
-    }
+    citySvg
+        .append('g')
+        .attr('class', 'maxT')
+        .append('text')
+        .attr('x', x(getX(today)) + 4)
+        .attr('y', maxYt)
+        .attr('dy', '.35em')
+        .text(maxT)
+        .attr('fill', clr2(max));
 
     citySvg
         .append('circle')
@@ -796,39 +791,39 @@ function placePoints(city, today, min, max, cur, minyear, maxyear) {
 }
 
 function searchLastDate(data) {
-    var maxmonth = 0;
-    var maxday = 0;
+    var maxMonth = 0;
+    var maxDay = 0;
     data.forEach(function (d) {
         var month = Number(d.curtime.substr(3, 2));
         var day = Number(d.curtime.substr(0, 2));
-        if (month > maxmonth) {
-            maxmonth = month;
-            maxday = day;
+        if (month > maxMonth) {
+            maxMonth = month;
+            maxDay = day;
         }
-        else if (month == maxmonth) {
-            if (day > maxday) {
-                maxmonth = month;
-                maxday = day;
+        else if (month == maxMonth) {
+            if (day > maxDay) {
+                maxMonth = month;
+                maxDay = day;
             }
         }
     });
-    if (maxday < 10) {
-        maxday = '0' + maxday;
+    if (maxDay < 10) {
+        maxDay = '0' + maxDay;
     }
-    if (maxmonth < 10) {
-        maxmonth = '0' + maxmonth;
+    if (maxMonth < 10) {
+        maxMonth = '0' + maxMonth;
     }
-    return maxday + '.' + maxmonth;
+    return maxDay + '.' + maxMonth;
 }
 
-function drawToday(lastdate) {
-    var today = lastdate;
+function drawToday(lastDate) {
+    var today = lastDate;
 
     var curCity;
-    for (var city = 0; city < dotcoords.length; city++) {
-        curCity = dotcoords[city][0];
-        for (var i = 0; i < minmaxcur.length; i++) {
-            var m = minmaxcur[i];
+    for (var city = 0; city < dotCoords.length; city++) {
+        curCity = dotCoords[city][0];
+        for (var i = 0; i < minMaxCur.length; i++) {
+            var m = minMaxCur[i];
             if (m[0] == curCity && m[1] == today) {
                 placePoints(m[0], m[1], m[2], m[3], m[4], m[5], m[6]);
                 break;
@@ -841,12 +836,11 @@ d3.csv('alldatamin3.csv', function (data) {
     getMinMax(data); //вычисляем минимумы и максимумы на каждый день
     drawGraph(data); //рисуем график
 
-    d3.csv('2015.csv', function (data) {
-        var lastdate = searchLastDate(data);
-        //console.log('thisislastdate', lastdate);
-        getCur(data, minmaxcur); //заполняем текущую температуру
-        drawCurrentYear(data);
-        drawToday(lastdate);
+    d3.csv('2015.csv', function (thisYear) {
+        var lastDate = searchLastDate(thisYear);
+        getCur(thisYear, minMaxCur); //заполняем текущую температуру
+        drawCurrentYear(thisYear);
+        drawToday(lastDate);
     })
 });
 
@@ -854,9 +848,9 @@ $('.cityInfo')
     .mouseover(function () {
         var curCity = $(this).attr('id');
         var $dots = $('.dot');
-        for (var i = 0; i < dotcoords.length; i++) {
-            if (dotcoords[i][0] == curCity) {
-                $dots.css('left', dotcoords[i][1]).css('top', dotcoords[i][2]);
+        for (var i = 0; i < dotCoords.length; i++) {
+            if (dotCoords[i][0] == curCity) {
+                $dots.css('left', dotCoords[i][1]).css('top', dotCoords[i][2]);
                 if (curCity == 'MSK') {
                     $dots.css({
                         'width': '7px',
