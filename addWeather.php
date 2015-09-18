@@ -5,12 +5,11 @@
 <?php
 
 $doc = new DOMDocument();
-//$fp = fopen('svetosilru/temp/2016.csv', 'a');  //открываем файл на добавление
 
 $months = array("January" => "01", "February" => "02", "March" => "03", "April" => "04", "May" => "05", "June" => "06", "July" => "07", "August" => "08", "September" => "09", "October" => "10", "November" => "11", "December" => "12");
 $cities = array("MSK", "SPB", "NSK", "EKB", "NN", "KAZ", "CHE", "OMK", "SAM", "UFA", "ROS", "KSK");
 $woeids = array("2122265", "2123260", "2122541", "12599353", "2052932", "2121267", "12598116", "12516609", "2077746", "12597273", "2123177", "12597862");
-
+# 27612, 26063, 29638, 28440, 27459, 27595, 28645, 28698, 28900, 28722, 34730, 29570, 28224, 34560, 34123, 37171, 33946
 $today = getdate();
 $curmonth = $months[$today['month']];
 $curday = $today['mday'];
@@ -30,7 +29,6 @@ for ($i = 0; $i < sizeof($woeids); $i++) {
             $curtemp = $itemgotten->getElementsByTagName("condition")->item(0)->getAttribute("temp");
             $writestring = $cities[$i] . "," . $currentdate . "," . $curtemp . "\n";
             echo $writestring;
-            //$test = fwrite($fp, $writestring);
         };
     };
 };
