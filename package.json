@@ -1,0 +1,7 @@
+{
+  "name": "weather-records",
+  "version": "0.0.0",
+  "dependencies": {
+    "d3": "^3.5.6"
+  }
+}
