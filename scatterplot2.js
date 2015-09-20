@@ -151,6 +151,7 @@ function drawGraph(data) {
   //рисуем график для каждого города
   nested.forEach(function (d) {
     var city = d.key; //текущий город
+    //if (city != 'OMK') return;
     var temps = d.values; //все данные о температурах в текущем городе
 
     //считаем количество пасмурных, солнечных дней и осадков
