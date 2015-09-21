@@ -133,7 +133,7 @@ path {
     padding: 90px 0 0 0;
 }
 
-.cityInfo {
+.cityInfo, .cityPlaceholder {
     width: 220px;
     height: 200px;
     float: left;

@@ -17,8 +17,7 @@ var dotCoords = [
   ['PRM', 20, 26],
   ['VLG', 8, 29],
   ['VRN', 8, 25],
-  ['SOC', 1, 31],
-  ['SEV', -1, 27]
+  ['SOC', 1, 31]
 ];
 
 var clr1 = d3.scale.linear()

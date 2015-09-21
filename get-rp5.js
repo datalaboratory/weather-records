@@ -20,8 +20,7 @@ var cities = [
   {id: 28224, city: 'PRM'},
   {id: 34560, city: 'VLG'},
   {id: 34123, city: 'VRN'},
-  {id: 37171, city: 'SOC'},
-  {id: 33946, city: 'SEV'}
+  {id: 37171, city: 'SOC'}
 ];
 
 var date = new Date;
