@@ -49,7 +49,7 @@ var history;
 
 function getZipRequest(url, cb) {
   console.log('get and unzip', url);
-  http.get('http://' + host + '/' + url, function (response) {
+  http.get(url, function (response) {
     var chunks;
     chunks = [];
     response.on('data', function (chunk) {
@@ -57,7 +57,7 @@ function getZipRequest(url, cb) {
     });
     response.on('end', function () {
       var body = Buffer.concat(chunks);
-      zlib.gunzip(body, cb);
+      if (response.statusCode == 200) zlib.gunzip(body, cb);
     });
   });
 }
