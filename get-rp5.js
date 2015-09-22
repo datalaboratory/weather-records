@@ -68,7 +68,7 @@ function loadCity(city) {
   var postData = querystring.stringify({
     wmo_id: String(city.id),
     a_date1: "01.01." + year,
-    a_date2: d3.time.format("%d.%m.%Y")(new Date()),
+    a_date2: '31.12.' + year,
     f_ed3: "10",
     f_ed4: "100",
     f_ed5: "28",
