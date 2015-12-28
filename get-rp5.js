@@ -16,7 +16,7 @@ var cities = [
   {id: 28900, city: 'SAM'},
   {id: 28722, city: 'UFA'},
   {id: 34730, city: 'ROS'},
-  {id: 29570, city: 'KSK'},
+  {metar: 4983, city: 'KSK'},
   {id: 28224, city: 'PRM'},
   {id: 34560, city: 'VLG'},
   {id: 34123, city: 'VRN'},
@@ -65,8 +65,8 @@ function getZipRequest(url, cb) {
 var host = 'rp5.ru';
 
 function loadCity(city) {
-  var postData = querystring.stringify({
-    wmo_id: String(city.id),
+  var metar = !!city.metar;
+  var queryObject = {
     a_date1: "01.01." + year,
     a_date2: '31.12.' + year,
     f_ed3: "10",
@@ -75,20 +75,34 @@ function loadCity(city) {
     f_pe: "1",
     f_pe1: "2",
     lng_id: "2"
-  });
+  };
 
-  var request = http.request({
+  if (metar) {
+    queryObject.metar = String(city.metar)
+  } else {
+    queryObject.wmo_id = String(city.id)
+  }
+
+  var postData = querystring.stringify(queryObject);
+
+  var requestObject = {
     method: 'POST',
     host: host,
-    path: '/inc/f_archive.php',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
       'Content-Length': postData.length
     }
-  }, function (response) {
+  };
+  if (metar) {
+    requestObject.path = '/inc/f_metar.php'
+  } else {
+    requestObject.path = '/inc/f_archive.php'
+  }
+  var request = http.request(requestObject, function (response) {
     response.setEncoding('utf8');
     response.on('data', function (chunk) {
       var match;
+      console.log('chunk', chunk);
       match = chunk.match(/href=([^>]*)/);
       getZipRequest(match[1], function (error, result) {
         var lines;
@@ -143,8 +157,8 @@ function loadCity(city) {
         });
 
         fs.appendFile('./2015.csv', results.map(function (d) {
-            return [city.city, d.key, d.values.mean].join(',');
-          }).join('\n') + '\n');
+          return [city.city, d.key, d.values.mean].join(',');
+        }).join('\n') + '\n');
 
         setTimeout(nextCity);
       });
