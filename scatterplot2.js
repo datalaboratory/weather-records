@@ -204,7 +204,7 @@ function drawGraph(data) {
 
     ctx.scale(ratio, ratio);
 
-    temps.forEach(function (temp) {
+    temps.forEach(function forEachTemp(temp) {
       var d = temp;
       var color = d3.rgb(clr1(d.temp));
 
@@ -847,6 +847,7 @@ function dataReady(error, data, thisYear) {
   drawCurrentYear(thisYear);
   drawToday(lastDate);
 
+  $('.loading-cover').fadeOut();
   if (performance) console.log('rendered @', performance.now())
 }
 

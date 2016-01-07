@@ -208,8 +208,60 @@ svg {
 }
 
 
+/*--------------------------------------------------------------------------------------*/
 
 
+
+.loading-cover {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    z-index: 999;
+}
+
+.loading-cover__dl-symbol {
+    position: absolute;
+    width: 57px;
+    height: 40px;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+@-webkit-keyframes first-rect-keyframes {
+    0% {-webkit-transform: translateX(0px);transform: translateX(0px);}
+    100% {-webkit-transform: translateX(1100px);transform: translateX(1100px);}
+}
+
+@keyframes first-rect-keyframes {
+    0% {-webkit-transform: translateX(0px);transform: translateX(0px);}
+    100% {-webkit-transform: translateX(1100px);transform: translateX(1100px);}
+}
+
+@-webkit-keyframes second-rect-keyframes {
+    0% {-webkit-transform: translateX(-1099px);transform: translateX(-1099px);}
+    100% {-webkit-transform: translateX(1px);transform: translateX(1px);}
+}
+
+@keyframes second-rect-keyframes {
+    0% {-webkit-transform: translateX(-1099px);transform: translateX(-1099px);}
+    100% {-webkit-transform: translateX(1px);transform: translateX(1px);}
+}
+
+.loading-cover__dl-symbol .first-rect {
+    -webkit-animation: first-rect-keyframes 5s linear infinite;
+    animation: first-rect-keyframes 5s linear infinite;
+}
+
+.loading-cover__dl-symbol .second-rect {
+    -webkit-animation: second-rect-keyframes 5s linear infinite;
+    animation: second-rect-keyframes 5s linear infinite;
+}
 
 
 
