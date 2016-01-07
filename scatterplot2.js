@@ -20,7 +20,7 @@ var dotCoords = [
   ['SOC', 1, 31]
 ];
 
-var xOffset = 8;
+var year = (new Date()).getFullYear();
 
 var clr1 = d3.scale.linear()
   .interpolate(d3.interpolateHcl)
@@ -568,14 +568,15 @@ function restorePoints(city) {
     .attr('x', curMinMax.min[4])
     .attr('y', curMinMax.min[5])
     .attr('fill', curMinMax.min[6])
-    .style('text-anchor', 'end')
+    .style('text-anchor', 'start')
     .text(curMinMax.min[7]);
+
 
   d3.select('#' + city + ' .maxT text')
     .attr('x', curMinMax.max[4])
     .attr('y', curMinMax.max[5])
     .attr('fill', curMinMax.max[6])
-    .style('text-anchor', 'end')
+    .style('text-anchor', 'start')
     .text(curMinMax.max[7]);
 
   d3.select('#' + city + ' .curT text')
@@ -583,7 +584,7 @@ function restorePoints(city) {
     .attr('y', curMinMax.cur[5])
     .attr('fill', curMinMax.cur[6])
     .attr('id', 'notmouseovertext')
-    .style('text-anchor', 'end')
+    .style('text-anchor', 'start')
     .text(curMinMax.cur[7])
 }
 
@@ -662,7 +663,7 @@ function placePoints(city, today, min, max, cur, minyear, maxyear) {
     curT = '+' + curT;
   } else {
     curT += '';
-    if (minT !== '0') {
+    if (minT !== '0' && curT !== '0') {
       curT = curT.substr(1, curT.length - 1);
       curT = '−' + curT;
     }
@@ -725,10 +726,9 @@ function placePoints(city, today, min, max, cur, minyear, maxyear) {
     .append('g')
     .attr('class', 'minT')
     .append('text')
-    .attr('x', x(getX(today)) + 4 - xOffset)
+    .attr('x', x(getX(today)) + 4)
     .attr('y', minYt)
     .attr('dy', '.35em')
-    .style('text-anchor', 'end')
     .text(minT)
     .attr('fill', clr2(min));
 
@@ -744,10 +744,9 @@ function placePoints(city, today, min, max, cur, minyear, maxyear) {
     .append('g')
     .attr('class', 'maxT')
     .append('text')
-    .attr('x', x(getX(today)) + 4 - xOffset)
+    .attr('x', x(getX(today)) + 4)
     .attr('y', maxYt)
     .attr('dy', '.35em')
-    .style('text-anchor', 'end')
     .text(maxT)
     .attr('fill', clr2(max));
 
@@ -773,13 +772,12 @@ function placePoints(city, today, min, max, cur, minyear, maxyear) {
     .append('g')
     .attr('class', 'curT')
     .append('text')
-    .attr('x', x(getX(today)) + 4 - xOffset)
+    .attr('x', x(getX(today)) + 4)
     .attr('y', curYt)
     .attr('dy', '.35em')
-    .style('text-anchor', 'end')
     .text(function () {
       if (cur < min || cur > max) {
-        return curT + ' в 2015';
+        return curT + ' в ' + year;
       }
       return curT;
     })
@@ -836,17 +834,21 @@ function drawToday(lastDate) {
   }
 }
 
-d3.csv('alldatamin3.csv', function (data) {
+queue()
+    .defer(d3.csv, 'alldatamin3.csv')
+    .defer(d3.csv, year + '.csv')
+    .await(dataReady);
+function dataReady(error, data, thisYear) {
   getMinMax(data); //вычисляем минимумы и максимумы на каждый день
   drawGraph(data); //рисуем график
 
-  d3.csv('2015.csv', function (thisYear) {
-    var lastDate = searchLastDate(thisYear);
-    getCur(thisYear, minMaxCur); //заполняем текущую температуру
-    drawCurrentYear(thisYear);
-    drawToday(lastDate);
-  })
-});
+  var lastDate = searchLastDate(thisYear);
+  getCur(thisYear, minMaxCur); //заполняем текущую температуру
+  drawCurrentYear(thisYear);
+  drawToday(lastDate);
+
+  if (performance) console.log('rendered @', performance.now())
+}
 
 $('.cityInfo')
   .mouseover(function () {

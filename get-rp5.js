@@ -156,7 +156,7 @@ function loadCity(city) {
           });
         });
 
-        fs.appendFile('./2015.csv', results.map(function (d) {
+        fs.appendFile('./' + year + '.csv', results.map(function (d) {
           return [city.city, d.key, d.values.mean].join(',');
         }).join('\n') + '\n');
 
