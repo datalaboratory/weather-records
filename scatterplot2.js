@@ -43,7 +43,7 @@ function getRetinaRatio(ctx) {
   return devicePixelRatio / backingStoreRatio;
 }
 
-var yDomain = [60, -45];
+var yDomain = [60, -60];
 
 var mouseOvercity = ['', ''];
 
