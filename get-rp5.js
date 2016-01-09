@@ -25,12 +25,35 @@ var cities = [
 
 var date = new Date;
 var year = date.getFullYear();
+var fileName = './' + year + '.csv';
 
 function getTemp(d) {
   return d.temp;
 }
 function getRoundTemp(d) {
   return Math.round(d.temp);
+}
+
+function stringToDate(line) {
+  var date = line.slice(0, 5);
+  var temp = line.slice(line.indexOf(';') + 1);
+  return {
+    date: date,
+    temp: temp
+  };
+}
+
+function reduceData(line) {
+  var data = line.split(';');
+  if (data.length < 2) return '';
+  if (data[1].length == 0) return '';
+  data = data
+    .slice(0, 2)
+    .map(function (d) {
+      if (d == '') return '';
+      return d.match(/"([^"]*)"/)[1];
+    });
+  return data.join(';');
 }
 
 var nest = d3.nest()
@@ -101,39 +124,19 @@ function loadCity(city) {
   var request = http.request(requestObject, function (response) {
     response.setEncoding('utf8');
     response.on('data', function (chunk) {
-      var match;
-      console.log('chunk', chunk);
-      match = chunk.match(/href=([^>]*)/);
-      getZipRequest(match[1], function (error, result) {
+      var match = chunk.match(/href=([^>]*)/);
+        getZipRequest(match[1], function (error, result) {
         var lines;
         lines = result.toString().split('\n').filter(function (line) {
           return line[0] !== '#';
         });
         lines = lines.slice(1);
         var results = lines
-          .map(function (line) {
-            var data = line.split(';');
-            if (data.length < 2) return '';
-            if (data[1].length == 0) return '';
-            data = data
-              .slice(0, 2)
-              .map(function (d) {
-                if (d == '') return '';
-                return d.match(/"([^"]*)"/)[1];
-              });
-            return data.join(';');
-          })
+          .map(reduceData)
           .filter(function (line) {
             return line.length > 17;
           })
-          .map(function (line) {
-            var date = line.slice(0, 5);
-            var temp = line.slice(line.indexOf(';') + 1);
-            return {
-              date: date,
-              temp: temp
-            };
-          });
+          .map(stringToDate);
         results = nest.entries(results);
 
         results.forEach(function (d) {
@@ -143,12 +146,12 @@ function loadCity(city) {
             if (hLine.indexOf(key) != 0) return hLine;
             var tokens = hLine.split(',');
             if (ts[0] < Number(tokens[6])) {
-              console.log(key, tokens[6], 'new min', ts[0]);
+              console.log(key, 'new min', tokens[6], '→', ts[0]);
               tokens[6] = ts[0];
               tokens[9] = year;
             }
             if (ts[1] > Number(tokens[7])) {
-              console.log(key, tokens[7], 'new max', ts[1]);
+              console.log(key, 'new max', tokens[7], '→', ts[1]);
               tokens[7] = ts[1];
               tokens[8] = year;
             }
@@ -156,7 +159,7 @@ function loadCity(city) {
           });
         });
 
-        fs.appendFile('./' + year + '.csv', results.map(function (d) {
+        fs.appendFile(fileName, results.map(function (d) {
           return [city.city, d.key, d.values.mean].join(',');
         }).join('\n') + '\n');
 
@@ -179,6 +182,6 @@ function nextCity() {
 
 fs.readFile('./alldatamin3.csv', function (error, result) {
   history = result.toString().split('\n');
-  fs.writeFile('./2015.csv', 'city,curtime,temp\n');
+  fs.writeFile(fileName, 'city,curtime,temp\n');
   nextCity();
 });
