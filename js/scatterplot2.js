@@ -670,9 +670,10 @@ function placePoints(city, today, min, max, cur, minyear, maxyear) {
   }
 
   if (city == 'MSK') {
+    //Что бы не накладывались год и сейчас, если сейчас новый рекорд
+    minT = (curT == minT) ? '': (minT + '°C в ' + minyear);
+    maxT = (curT == maxT) ? '': (maxT + '°C в ' + maxyear);
     curT = curT + '°C сейчас';
-    minT = minT + '°C в ' + minyear;
-    maxT = maxT + '°C в ' + maxyear;
   } else {
     minT = minT + ' в ' + minyear;
     maxT = maxT + ' в ' + maxyear;

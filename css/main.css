@@ -242,7 +242,8 @@ svg {
 
 .footer .disclaimer {
     max-width: 600px;
-    margin-top: 8px
+    margin-top: 8px;
+    line-height:  1.4
 }
 
 .leftBlock {
