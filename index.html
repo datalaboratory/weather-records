@@ -1,17 +1,35 @@
 <html>
 <head>
-    <title>Температурные рекорды в городах России</title>
+    <title>Температурные рекорды в городах России. Визуализация Лаборатории данных</title>
 
-    <meta property="og:image" content="http://temp.svetosil.ru/weather.jpg"/>
-    <meta property="og:title" content="Температурные рекорды в городах России"/>
+<!--    <meta property="og:image" content="http://temp.svetosil.ru/weather.jpg"/>-->
+   
+     <meta property="og:title" content="Температурные рекорды в городах России"/>
 
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Температурные рекорды в городах России" />
+    <meta property="og:description" content="Интерактивная визуализация температурных рекордов в городах России с 2005 года." />
+    <meta property="og:url" content="http://weather-records.datalaboratory.ru/" />
+    <meta property="og:site_name" content="Температурные рекорды в городах России" />
+    <meta property="og:image" content="http://weather-records.datalaboratory.ru/weather.jpg" />
+   
+   
+   
+   
+   
+   
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <link rel="stylesheet" type="text/css" href="main.css">
-    <link rel="image_src" href="http://temp.svetosil.ru/weather.jpg"/>
-
+    
+    <link href="css/likely.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+<!--    <link rel="image_src" href="http://temp.svetosil.ru/weather.jpg"/>-->
+   
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/d3/d3.min.js"></script>
-    <script src="queue.min.js"></script>
+    <script src="js/queue.min.js"></script>
+    <script src="js/likely.js"></script>
+    
     <link rel="shortcut icon" href="/img/favicon.ico">
 </head>
 <body>
@@ -316,13 +334,38 @@
         <br><br><br><br>
     </div>
     <div class="clear"></div>
-    <div class="signature">
-        <p class="copyright">Визуализация <a href="http://datalaboratory.ru/">Лаборатории&nbsp;данных</a>.
-            Статистика <a href="http://rp5.ru/">rp5.ru</a>, 2005...2016 гг.
-            Ясные дни — облачность < 20%, пасмурные — облачность >
-            80%.<br><br><br></p>
-    </div>
+
+ 
+    
+           <div class="footer">
+          <div class="leftBlock">Визуализация <span class="signature"><a href="http://datalaboratory.ru">Лаборатории данных</a></span>
+          </div>
+          <div class="rightBlock">
+            <div class="likely likely-medium">
+              <div class="twitter" data-via="datalaboratory" data-title="Температурные рекорды в городах России:">Твитнуть</div>
+              <div class="facebook">Поделиться</div>
+              <div class="vkontakte" data-title="Температурные рекорды в городах России: http://weather-records.datalaboratory.ru/">Поделиться</div>
+              <div class="pinterest" data-media="http://weather-records.datalaboratory.ru/weather.jpg" data-title="Температурные рекорды в городах России: http://weather-records.datalaboratory.ru/">Запинить</div>
+            </div>
+            
+            
+          </div>
+          <div class="clear"></div>
+          <div class="disclaimer"> 
+           
+           <p>Статистика <a class="common-link" href="http://rp5.ru/">rp5.ru</a>, 2005...<script type="text/javascript">document.write(new Date().getFullYear());</script> гг.
+        <br>    Ясные дни — облачность &lt; 20%, пасмурные — облачность &gt;
+            80%.</p>
+            
+          </div>
+        </div>
+    
+    
+    
+    
+    
+    
 </div>
-<script src="scatterplot2.js"></script>
+<script src="js/scatterplot2.js"></script>
 </body>
 </html>

@@ -4,8 +4,16 @@ http://emojisymbols.com/
 */
 
 @font-face {
+    font-family: 'OriginalGaramondBTWebItalic';
+    src: url("../fonts/Original Garamond Italic/ORG46__W.eot");
+    src: url("../fonts/Original Garamond Italic/ORG46__W.eot?#iefix") format("embedded-opentype"), url("../fonts/Original Garamond Italic/ORG46__W.woff") format("woff"), url("../fonts/Original Garamond Italic/ORG46__W.ttf") format("truetype"), url("../fonts/Original Garamond Italic/ORG46__W.svg#OriginalGaramondBTWeb-Italic") format("svg");
+    font-weight: normal;
+    font-style: normal
+}
+
+@font-face {
     font-family: "Emoji";
-    src: url("fonts/EmojiSymbols-Regular.woff") format('woff');
+    src: url("../fonts/EmojiSymbols-Regular.woff") format('woff');
 }
 
 body {
@@ -14,6 +22,18 @@ body {
     font-family: Helvetica, Arial, sans-serif;
     font-size: 16px;
     color: #000;
+}
+
+.common-link {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    transition: color 0.25s ease-out, border-color 0.25s ease-out
+}
+
+.common-link:hover {
+    color: #dc322f;
+    border-color: rgba(220, 50, 47, 0.15)
 }
 
 h1 {
@@ -47,7 +67,7 @@ text {
     font-size: 12px;
 }
 
-path {
+.line {
     stroke: black;
     stroke-width: 0.5;
     fill: none;
@@ -123,7 +143,7 @@ path {
     height: 50px;
     margin: -8px 0 0 25px;
     float: left;
-    background: url(img/map.png);
+    background: url(../img/map.png);
     background-size: 100%;
 }
 
@@ -195,16 +215,42 @@ svg {
 
 /*--------------------------------------------------------------------------------------*/
 
-.signature {
-    height: 20px;
-    margin: -30px 0 40px 0;
-    line-height: 1.5em;
+.footer {
+    margin: 0 0 75px 0;
+    font-size: 13px
 }
 
-.copyright {
-    font-size: 12px;
-    margin: 0;
-    padding: 0;
+.footer .signature {
+    font-family: 'OriginalGaramondBTWebItalic', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 15px
+}
+
+.footer .signature a {
+    color: #000;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    text-decoration: none
+}
+
+.footer .signature a:hover {
+    color: #dc322f;
+    border-bottom: 1px solid rgba(220, 50, 47, 0.3)
+}
+
+.footer .signature .likely {
+    margin-top: -3px
+}
+
+.footer .disclaimer {
+    max-width: 600px;
+    margin-top: 8px
+}
+
+.leftBlock {
+    float: left
+}
+
+.rightBlock {
+    float: right
 }
 
 
