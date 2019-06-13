@@ -20,7 +20,7 @@ var dotCoords = [
   ['SOC', 1, 31]
 ];
 
-var year = (new Date()).getFullYear();
+var year = 2018;
 
 var clr1 = d3.scale.linear()
   .interpolate(d3.interpolateHcl)
